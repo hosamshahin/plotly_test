@@ -22,19 +22,19 @@ var data = [
     },
     // boxmean: true,
     // notched: true,
-    selectedpoints: [1],
+    // selectedpoints: [1],
     selected: {
       marker: {
         size: 6,
         color: 'rgb(255, 0, 0)'
       }
     },
-    // unselected: {
-    //   marker: {
-    //     size: 5,
-    //     opacity: 0.5
-    //   }
-    // },
+    unselected: {
+      marker: {
+        size: 5,
+        opacity: 0.5
+      }
+    },
     line: {
       width: 1
     },
@@ -59,19 +59,19 @@ var data = [
       opacity: 1
     },
     // notched: true,
-    selectedpoints: [1],
+    // selectedpoints: [1],
     selected: {
       marker: {
         size: 6,
         color: 'rgb(0, 255, 0)'
       }
     },
-    // unselected: {
-    //   marker: {
-    //     size: 5,
-    //     opacity: 0.5
-    //   }
-    // },
+    unselected: {
+      marker: {
+        size: 5,
+        opacity: 0.5
+      }
+    },
     line: {
       width: 1
     },
