@@ -167,12 +167,10 @@ $(function () {
       showlegend: false
     };
 
-    Plotly.newPlot('myDiv', data, layout);
+    Plotly.newPlot('plotlyDiv', data, layout);
   };
 
   // selectize code
-  var $wrapper = $('#wrapper');
-
   var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
     '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
 
@@ -237,10 +235,11 @@ $(function () {
   });
 
   // show current input values
-  $('select.selectized,input.selectized', $wrapper).each(function () {
+  $('select.selectized,input.selectized').each(function () {
     var $container = $('<div>').addClass('value').html('Current Value: ');
     var $value = $('<span>').appendTo($container);
     var $input = $(this);
+
     var update = function (e) {
       var selectedStudents = $input.val();
       $value.text(JSON.stringify(selectedStudents));
