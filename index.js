@@ -1,39 +1,44 @@
 
 $(function () {
-  // $('.student_data').select2();
   var studentsInfo = [
-    { first_name: "Istrator", last_name: "Admin", email: "admin@opendsa.org" },
-    { first_name: "Teacher", last_name: "Ima", email: "example-1@railstutorial.org" },
-    { first_name: "Stoltenberg", last_name: "Jordon", email: "example-2@railstutorial.org" },
-    { first_name: "Torphy", last_name: "Ardith", email: "example-3@railstutorial.org" },
-    { first_name: "Keeling", last_name: "Pearlie", email: "example-4@railstutorial.org" },
-    { first_name: "White", last_name: "Rahul", email: "example-5@railstutorial.org" },
-    { first_name: "Conn", last_name: "Maiya", email: "example-6@railstutorial.org" },
-    { first_name: "Thompson", last_name: "Koby", email: "example-7@railstutorial.org" },
-    { first_name: "Haag", last_name: "Robyn", email: "example-8@railstutorial.org" },
-    { first_name: "O", last_name: "Reilly", email: "example-9@railstutorial.org" },
-    { first_name: "Marquardt", last_name: "Zoe", email: "example-10@railstutorial.org" },
-    { first_name: "Kiehn", last_name: "Amira", email: "example-11@railstutorial.org" },
-    { first_name: "Doyle", last_name: "Patrick", email: "example-12@railstutorial.org" },
-    { first_name: "Runte", last_name: "Brooks", email: "example-13@railstutorial.org" },
-    { first_name: "Morissette", last_name: "Otho", email: "example-14@railstutorial.org" },
-    { first_name: "Connelly", last_name: "Leda", email: "example-15@railstutorial.org" },
-    { first_name: "Frami", last_name: "Dayne", email: "example-16@railstutorial.org" },
-    { first_name: "Morar", last_name: "Aurelia", email: "example-17@railstutorial.org" },
-    { first_name: "Mohr", last_name: "Buster", email: "example-18@railstutorial.org" },
-    { first_name: "Sporer", last_name: "Casper", email: "example-19@railstutorial.org" },
-    { first_name: "Nader", last_name: "Jammie", email: "example-20@railstutorial.org" },
-    { first_name: "Wolff", last_name: "Noah", email: "example-21@railstutorial.org" },
-    { first_name: "Upton", last_name: "Fatima", email: "example-22@railstutorial.org" },
-    { first_name: "Bernier", last_name: "Oma", email: "example-23@railstutorial.org" },
-    { first_name: "VonRueden", last_name: "Alexandro", email: "example-24@railstutorial.org" },
-    { first_name: "Pfannerstill", last_name: "Breanne", email: "example-25@railstutorial.org" },
-    { first_name: "Hilpert", last_name: "Darren", email: "example-26@railstutorial.org" },
-    { first_name: "Becker", last_name: "Virgie", email: "example-27@railstutorial.org" },
-    { first_name: "Gorczany", last_name: "Eleonore", email: "example-28@railstutorial.org" },
-    { first_name: "Wolf", last_name: "Malinda", email: "example-29@railstutorial.org" },
-    { first_name: "O", last_name: "Hara", email: "example-30@railstutorial.org" }
+    { last_name: "Istrator", first_name: "Admin", email: "admin@opendsa.org" },
+    { last_name: "Teacher", first_name: "Ima", email: "example-1@railstutorial.org" },
+    { last_name: "Stoltenberg", first_name: "Jordon", email: "example-2@railstutorial.org" },
+    { last_name: "Torphy", first_name: "Ardith", email: "example-3@railstutorial.org" },
+    { last_name: "Keeling", first_name: "Pearlie", email: "example-4@railstutorial.org" },
+    { last_name: "White", first_name: "Rahul", email: "example-5@railstutorial.org" },
+    { last_name: "Conn", first_name: "Maiya", email: "example-6@railstutorial.org" },
+    { last_name: "Thompson", first_name: "Koby", email: "example-7@railstutorial.org" },
+    { last_name: "Haag", first_name: "Robyn", email: "example-8@railstutorial.org" },
+    { last_name: "O", first_name: "Reilly", email: "example-9@railstutorial.org" },
+    { last_name: "Marquardt", first_name: "Zoe", email: "example-10@railstutorial.org" },
+    { last_name: "Kiehn", first_name: "Amira", email: "example-11@railstutorial.org" },
+    { last_name: "Doyle", first_name: "Patrick", email: "example-12@railstutorial.org" },
+    { last_name: "Runte", first_name: "Brooks", email: "example-13@railstutorial.org" },
+    { last_name: "Morissette", first_name: "Otho", email: "example-14@railstutorial.org" },
+    { last_name: "Connelly", first_name: "Leda", email: "example-15@railstutorial.org" },
+    { last_name: "Frami", first_name: "Dayne", email: "example-16@railstutorial.org" },
+    { last_name: "Morar", first_name: "Aurelia", email: "example-17@railstutorial.org" },
+    { last_name: "Mohr", first_name: "Buster", email: "example-18@railstutorial.org" },
+    { last_name: "Sporer", first_name: "Casper", email: "example-19@railstutorial.org" },
+    { last_name: "Nader", first_name: "Jammie", email: "example-20@railstutorial.org" },
+    { last_name: "Wolff", first_name: "Noah", email: "example-21@railstutorial.org" },
+    { last_name: "Upton", first_name: "Fatima", email: "example-22@railstutorial.org" },
+    { last_name: "Bernier", first_name: "Oma", email: "example-23@railstutorial.org" },
+    { last_name: "VonRueden", first_name: "Alexandro", email: "example-24@railstutorial.org" },
+    { last_name: "Pfannerstill", first_name: "Breanne", email: "example-25@railstutorial.org" },
+    { last_name: "Hilpert", first_name: "Darren", email: "example-26@railstutorial.org" },
+    { last_name: "Becker", first_name: "Virgie", email: "example-27@railstutorial.org" },
+    { last_name: "Gorczany", first_name: "Eleonore", email: "example-28@railstutorial.org" },
+    { last_name: "Wolf", first_name: "Malinda", email: "example-29@railstutorial.org" },
+    { last_name: "O", first_name: "Hara", email: "example-30@railstutorial.org" }
   ]
+
+  var yData = {
+    Weeks: [3.2146905937041748, 16.337442378832883, 3.2539601774461735, 4.755584638603736, 15.956184503328522, 1.0236859132489684, 6.423572479978357, 19.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981],
+    Chapters: [3.2146905937041748, 15.337442378832883, 13.2539601774461735, 14.755584638603736, 5.956184503328522, 11.0236859132489684, 16.423572479978357, 10.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981]
+  }
+
   var text = studentsInfo.map(x => x.first_name + " " + x.last_name + "<" + x.email + ">")
   var studentsInfoIndex = {};
 
@@ -41,14 +46,13 @@ $(function () {
     studentsInfoIndex[studentsInfo[i]['email']] = i;
   }
 
-
   // Default box plot
-  setBoxPlot();
+  setBoxPlot()
 
   function setBoxPlot(chosenStudents) {
-    var chosenStudents = chosenStudents || [];
-    var selected = {};
-    var unselected = {};
+    var chosenStudents = chosenStudents || []
+    var selected = {}
+
     if (chosenStudents != undefined || chosenStudents.length != 0) {
       selected = {
         marker: {
@@ -56,21 +60,12 @@ $(function () {
           color: 'rgb(255, 0, 0)'
         }
       }
-      unselected = {
-        marker: {
-          size: 5,
-          opacity: 0.5
-        }
-      }
     }
-
-    var yData = [3.2146905937041748, 16.337442378832883, 3.2539601774461735, 4.755584638603736, 15.956184503328522, 1.0236859132489684, 6.423572479978357, 19.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981];
-    var yData1 = [3.2146905937041748, 15.337442378832883, 13.2539601774461735, 14.755584638603736, 5.956184503328522, 11.0236859132489684, 16.423572479978357, 10.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981];
 
     var data = [{
       name: 'Week 1',
       type: 'box',
-      y: yData,
+      y: yData["Weeks"],
       text: text,
       hoverinfo: "all",
       hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
@@ -83,13 +78,9 @@ $(function () {
         size: 4,
         symbol: '0',
         opacity: 1,
-        // color: 'rgba(93, 164, 214, 0.5)'
       },
-      // boxmean: true,
-      // notched: true,
       selectedpoints: chosenStudents,
       selected: selected,
-      // unselected: unselected,
       line: {
         width: 1
       },
@@ -99,7 +90,7 @@ $(function () {
     }, {
       name: 'Chapter 1',
       type: 'box',
-      y: yData1,
+      y: yData["Chapters"],
       text: text,
       hoverinfo: "all",
       hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
@@ -113,10 +104,8 @@ $(function () {
         symbol: '0',
         opacity: 1
       },
-      // notched: true,
       selectedpoints: chosenStudents,
       selected: selected,
-      // unselected: unselected,
       line: {
         width: 1
       },
