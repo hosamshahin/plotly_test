@@ -53,205 +53,251 @@ $(function () {
 
   var plotMean = null;
   var plotQ1 = null;
+  var dataTables = null;
 
-  setBoxPlot()
+  function createDataTables(chosenStudentsInfo) {
+    return $('#students_info').DataTable({
+      destroy: true,
+      data: chosenStudentsInfo,
+      columns: [
+        { title: "Fist Name" },
+        { title: "Last Name" },
+        { title: "Email" },
+        { title: "Reading time" }
+      ]
+    });
+  }
 
-  function setBoxPlot(chosenStudents) {
-    var chosenStudents = chosenStudents || []
-    var selected = {}
-
-    if (chosenStudents != undefined || chosenStudents.length != 0) {
-      selected = {
+  // plotly data
+  var data = [
+    {
+      name: 'Week 1',
+      type: 'box',
+      y: yData["Weeks"],
+      text: text,
+      hoverinfo: "all",
+      hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
+      boxpoints: 'all',
+      jitter: 0.2,
+      whiskerwidth: 0.2,
+      fillcolor: 'cls',
+      marker: {
+        outliercolor: 'rgb(255, 0, 0)',
+        size: 4,
+        symbol: '0',
+        opacity: 1
+      },
+      selectedpoints: [],
+      selected: {
         marker: {
           size: 6,
           color: 'rgb(255, 0, 0)'
         }
+      },
+      line: {
+        width: 1
+      },
+      hoverlabel: {
+        font: { size: 15 }
       }
-    }
-
-    var data = [
-      {
-        name: 'Week 1',
-        type: 'box',
-        y: yData["Weeks"],
-        text: text,
-        hoverinfo: "all",
-        hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
-        boxpoints: 'all',
-        jitter: 0.2,
-        whiskerwidth: 0.2,
-        fillcolor: 'cls',
-        marker: {
-          outliercolor: 'rgb(255, 0, 0)',
-          size: 4,
-          symbol: '0',
-          opacity: 1,
-        },
-        selectedpoints: chosenStudents,
-        selected: selected,
-        line: {
-          width: 1
-        },
-        hoverlabel: {
-          font: { size: 15 }
-        }
+    },
+    {
+      name: 'Chapter 1',
+      type: 'box',
+      y: yData["Chapters"],
+      text: text,
+      hoverinfo: "all",
+      hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
+      boxpoints: 'all',
+      jitter: 0.2,
+      whiskerwidth: 0.2,
+      fillcolor: 'cls',
+      marker: {
+        outliercolor: 'rgb(255, 0, 0)',
+        size: 4,
+        symbol: '0',
+        opacity: 1
       },
-      {
-        name: 'Chapter 1',
-        type: 'box',
-        y: yData["Chapters"],
-        text: text,
-        hoverinfo: "all",
-        hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
-        boxpoints: 'all',
-        jitter: 0.2,
-        whiskerwidth: 0.2,
-        fillcolor: 'cls',
-        marker: {
-          outliercolor: 'rgb(255, 0, 0)',
-          size: 4,
-          symbol: '0',
-          opacity: 1
-        },
-        selectedpoints: chosenStudents,
-        selected: selected,
-        line: {
-          width: 1
-        },
-        hoverlabel: {
-          font: { size: 15 }
-        },
-        visible: false
-      }
-    ];
-
-    var updatemenus = [
-      {
-        buttons: [
-          {
-            args: [{ 'visible': [true, false] },
-            {
-              'title': 'Total time students spend on OpenDSA materials per week.'
-            }
-            ],
-            label: 'Weeks',
-            method: 'update'
-          },
-          {
-            args: [{ 'visible': [false, true] },
-            {
-              'title': 'Total time students spend on OpenDSA materials per chapter.'
-            }
-            ],
-            label: 'Chapters',
-            method: 'update'
-          }
-        ],
-        direction: 'left',
-        pad: { 'r': 10, 't': 10 },
-        showactive: true,
-        type: 'buttons',
-        x: 1,
-        xanchor: 'left',
-        y: 1.2,
-        yanchor: 'top'
-      },
-      {
-        buttons: [
-          {
-            name: 'reset',
-            label: 'Reset',
-            method: 'skip',
-            execute: false
-          },
-          {
-            name: '25',
-            label: '25th percentile',
-            method: 'skip',
-            execute: false
-          },
-          {
-            name: '50',
-            label: '50th percentile',
-            method: 'skip',
-            execute: false
-          }
-        ],
-        direction: 'left',
-        pad: { 'r': 10, 't': 10 },
-        showactive: true,
-        type: 'buttons',
-        x: 0,
-        xanchor: 'left',
-        y: 1.2,
-        yanchor: 'top'
-      }
-    ]
-
-    var layout = {
-      'title': 'Total time students spend on OpenDSA materials per week.',
-      updatemenus: updatemenus,
-      yaxis: {
-        autorange: true,
-        showgrid: true,
-        zeroline: true,
-        dtick: 5,
-        gridcolor: 'rgb(255, 255, 255)',
-        gridwidth: 1,
-        zerolinecolor: 'rgb(255, 255, 255)',
-        zerolinewidth: 2
-      },
-      margin: {
-        l: 40,
-        r: 30,
-        b: 80,
-        t: 100
-      },
-      paper_bgcolor: 'rgb(243, 243, 243)',
-      plot_bgcolor: 'rgb(243, 243, 243)',
-      showlegend: false
-    }
-
-    Plotly.newPlot(plotlyDiv, data, layout)
-      .then((plot) => {
-        console.log(plot.calcdata[0][0])
-        plotMean = plot.calcdata[0][0]['med'];
-        plotQ1 = plot.calcdata[0][0]['q1'];
-      })
-
-    plotlyDiv.on('plotly_buttonclicked', function (e) {
-      console.log(e.button.name)
-      var buttonName = e.button.name;
-      var selected = {
+      selectedpoints: [],
+      selected: {
         marker: {
           size: 6,
           color: 'rgb(255, 0, 0)'
         }
-      }
+      },
+      line: {
+        width: 1
+      },
+      hoverlabel: {
+        font: { size: 15 }
+      },
+      visible: false
+    }
+  ];
 
-      var chosenStudents = [];
-      if (buttonName == '25') {
-        for (var i = 0; i < yData["Weeks"].length; i++) {
-          if (yData["Weeks"][i] <= plotQ1) {
-            chosenStudents.push(i);
+  // plotly style the selected points
+  // var selected = {
+  //   marker: {
+  //     size: 6,
+  //     color: 'rgb(255, 0, 0)'
+  //   }
+  // }
+
+  // plotly menu
+  var updatemenus = [
+    {
+      buttons: [
+        {
+          name: 'weeks',
+          args: [{ 'visible': [true, false] },
+          {
+            'title': 'Total time students spend on OpenDSA materials per week.'
           }
-        }
-      } else if (buttonName == '50') {
-        for (var i = 0; i < yData["Weeks"].length; i++) {
-          if (yData["Weeks"][i] <= plotMean) {
-            chosenStudents.push(i);
+          ],
+          label: 'Weeks',
+          method: 'update'
+        },
+        {
+          name: 'chapters',
+          args: [{ 'visible': [false, true] },
+          {
+            'title': 'Total time students spend on OpenDSA materials per chapter.'
           }
+          ],
+          label: 'Chapters',
+          method: 'update'
         }
-      } else {
-        chosenStudents = []
-      }
+      ],
+      direction: 'left',
+      pad: { 'r': 10, 't': 10 },
+      showactive: true,
+      type: 'buttons',
+      x: 1,
+      xanchor: 'right',
+      y: 1.2,
+      yanchor: 'top'
+    },
+    {
+      buttons: [
+        {
+          name: 'reset',
+          label: 'Reset',
+          method: 'skip',
+          execute: false
+        },
+        {
+          name: '25',
+          label: '25th percentile',
+          method: 'skip',
+          execute: false
+        },
+        {
+          name: '50',
+          label: '50th percentile',
+          method: 'skip',
+          execute: false
+        }
+      ],
+      direction: 'left',
+      pad: { 'r': 10, 't': 10 },
+      showactive: false,
+      type: 'buttons',
+      x: 0,
+      xanchor: 'left',
+      y: 1.2,
+      yanchor: 'top'
+    }
+  ]
 
-      data[0]['selectedpoints'] = chosenStudents
-      data[0]['selected'] = selected
+  // plotly layout
+  var layout = {
+    'title': 'Total time students spend on OpenDSA materials per week.',
+    updatemenus: updatemenus,
+    yaxis: {
+      autorange: true,
+      showgrid: true,
+      zeroline: true,
+      dtick: 5,
+      gridcolor: 'rgb(255, 255, 255)',
+      gridwidth: 1,
+      zerolinecolor: 'rgb(255, 255, 255)',
+      zerolinewidth: 2
+    },
+    margin: {
+      l: 40,
+      r: 30,
+      b: 80,
+      t: 100
+    },
+    paper_bgcolor: 'rgb(243, 243, 243)',
+    plot_bgcolor: 'rgb(243, 243, 243)',
+    showlegend: false
+  }
 
-      Plotly.update(plotlyDiv, data, layout);
+  // plotly initialize
+  Plotly.newPlot(plotlyDiv, data, layout)
+    .then((plot) => {
+      // console.log(plot.calcdata[0][0])
+      plotMean = plot.calcdata[0][0]['med'];
+      plotQ1 = plot.calcdata[0][0]['q1'];
     })
 
+  // event handler to select points and show datatabels
+  plotlyDiv.on('plotly_buttonclicked', function (e) {
+    // console.log(e.button.name)
+    var buttonName = e.button.name;
+
+    if (['weeks', 'chapters'].includes(buttonName)) {
+      selectize.clear()
+    }
+    var chosenStudents = [];
+    var chosenStudentsInfo = [];
+    var studentInfo = {};
+    if (buttonName == '25') {
+      for (var i = 0; i < yData["Weeks"].length; i++) {
+        if (yData["Weeks"][i] <= plotQ1) {
+          chosenStudents.push(i);
+          studentInfo = studentsInfo[i]
+          chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], yData["Weeks"][i]])
+        }
+      }
+      dataTables = createDataTables(chosenStudentsInfo)
+    } else if (buttonName == '50') {
+      for (var i = 0; i < yData["Weeks"].length; i++) {
+        if (yData["Weeks"][i] <= plotMean) {
+          chosenStudents.push(i);
+          studentInfo = studentsInfo[i]
+          chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], yData["Weeks"][i]])
+        }
+      }
+      dataTables = createDataTables(chosenStudentsInfo)
+    } else {
+      chosenStudents = []
+      if (dataTables) {
+        // dataTables.clear();
+        dataTables.rows()
+          .remove()
+          .draw();
+      }
+    }
+
+    data[0]['selectedpoints'] = chosenStudents
+    // data[0]['selected'] = selected
+    data[1]['selectedpoints'] = chosenStudents
+    // data[1]['selected'] = selected
+
+    Plotly.update(plotlyDiv, data, layout);
+  })
+
+  function updateBoxPlot(chosenStudents) {
+    var chosenStudents = chosenStudents || []
+
+    data[0]['selectedpoints'] = chosenStudents
+    // data[0]['selected'] = selected
+    data[1]['selectedpoints'] = chosenStudents
+    // data[1]['selected'] = selected
+
+    Plotly.update(plotlyDiv, data, layout)
   };
 
   //
@@ -264,7 +310,10 @@ $(function () {
     return $.trim((item.first_name || '') + ' ' + (item.last_name || ''));
   };
 
-  $('#select-to').selectize({
+
+
+  var $selectize = $('#select-to').selectize({
+    plugins: ['remove_button'],
     persist: false,
     maxItems: null,
     valueField: 'email',
@@ -320,82 +369,24 @@ $(function () {
     }
   })
 
-  // show current input values
+  var selectize = $selectize[0].selectize;
+
+  // show current values in multi input dropdown
   $('select.selectized,input.selectized').each(function () {
-    var $container = $('<div>').addClass('value').html('Current Value: ');
-    var $value = $('<span>').appendTo($container);
     var $input = $(this);
 
     var update = function (e) {
       var selectedStudents = $input.val();
-      $value.text(JSON.stringify(selectedStudents));
       if (selectedStudents) {
         var chosenStudents = [];
         for (var i = 0; i < selectedStudents.length; i++) {
           chosenStudents.push(studentsInfoIndex[selectedStudents[i]]);
         }
-        console.log(chosenStudents);
-        setBoxPlot(chosenStudents)
+        updateBoxPlot(chosenStudents)
       }
     }
 
     $(this).on('change', update);
-    update();
-
-    $container.insertAfter($input);
-  });
-
-  //
-  // datatables
-  //
-  var dataSet = [
-    ["Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800"],
-    ["Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750"],
-    ["Ashton Cox", "Junior Technical Author", "San Francisco", "1562", "2009/01/12", "$86,000"],
-    ["Cedric Kelly", "Senior Javascript Developer", "Edinburgh", "6224", "2012/03/29", "$433,060"],
-    ["Airi Satou", "Accountant", "Tokyo", "5407", "2008/11/28", "$162,700"],
-    ["Brielle Williamson", "Integration Specialist", "New York", "4804", "2012/12/02", "$372,000"],
-    ["Herrod Chandler", "Sales Assistant", "San Francisco", "9608", "2012/08/06", "$137,500"],
-    ["Rhona Davidson", "Integration Specialist", "Tokyo", "6200", "2010/10/14", "$327,900"],
-    ["Colleen Hurst", "Javascript Developer", "San Francisco", "2360", "2009/09/15", "$205,500"],
-    ["Sonya Frost", "Software Engineer", "Edinburgh", "1667", "2008/12/13", "$103,600"],
-    ["Jena Gaines", "Office Manager", "London", "3814", "2008/12/19", "$90,560"],
-    ["Quinn Flynn", "Support Lead", "Edinburgh", "9497", "2013/03/03", "$342,000"],
-    ["Charde Marshall", "Regional Director", "San Francisco", "6741", "2008/10/16", "$470,600"],
-    ["Haley Kennedy", "Senior Marketing Designer", "London", "3597", "2012/12/18", "$313,500"],
-    ["Tatyana Fitzpatrick", "Regional Director", "London", "1965", "2010/03/17", "$385,750"],
-    ["Michael Silva", "Marketing Designer", "London", "1581", "2012/11/27", "$198,500"],
-    ["Paul Byrd", "Chief Financial Officer (CFO)", "New York", "3059", "2010/06/09", "$725,000"],
-    ["Gloria Little", "Systems Administrator", "New York", "1721", "2009/04/10", "$237,500"],
-    ["Bradley Greer", "Software Engineer", "London", "2558", "2012/10/13", "$132,000"],
-    ["Dai Rios", "Personnel Lead", "Edinburgh", "2290", "2012/09/26", "$217,500"],
-    ["Jenette Caldwell", "Development Lead", "New York", "1937", "2011/09/03", "$345,000"],
-    ["Yuri Berry", "Chief Marketing Officer (CMO)", "New York", "6154", "2009/06/25", "$675,000"],
-    ["Caesar Vance", "Pre-Sales Support", "New York", "8330", "2011/12/12", "$106,450"],
-    ["Doris Wilder", "Sales Assistant", "Sydney", "3023", "2010/09/20", "$85,600"],
-    ["Angelica Ramos", "Chief Executive Officer (CEO)", "London", "5797", "2009/10/09", "$1,200,000"],
-    ["Gavin Joyce", "Developer", "Edinburgh", "8822", "2010/12/22", "$92,575"],
-    ["Jennifer Chang", "Regional Director", "Singapore", "9239", "2010/11/14", "$357,650"],
-    ["Brenden Wagner", "Software Engineer", "San Francisco", "1314", "2011/06/07", "$206,850"],
-    ["Fiona Green", "Chief Operating Officer (COO)", "San Francisco", "2947", "2010/03/11", "$850,000"],
-    ["Shou Itou", "Regional Marketing", "Tokyo", "8899", "2011/08/14", "$163,000"],
-    ["Michelle House", "Integration Specialist", "Sydney", "2769", "2011/06/02", "$95,400"],
-    ["Suki Burks", "Developer", "London", "6832", "2009/10/22", "$114,500"],
-    ["Prescott Bartlett", "Technical Author", "London", "3606", "2011/05/07", "$145,000"],
-    ["Gavin Cortez", "Team Leader", "San Francisco", "2860", "2008/10/26", "$235,500"],
-    ["Martena Mccray", "Post-Sales support", "Edinburgh", "8240", "2011/03/09", "$324,050"],
-    ["Unity Butler", "Marketing Designer", "San Francisco", "5384", "2009/12/09", "$85,675"]
-  ];
-  $('#example').DataTable({
-    data: dataSet,
-    columns: [
-      { title: "Name" },
-      { title: "Position" },
-      { title: "Office" },
-      { title: "Extn." },
-      { title: "Start date" },
-      { title: "Salary" }
-    ]
   });
 
 });
