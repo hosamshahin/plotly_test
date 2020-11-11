@@ -1,159 +1,248 @@
-var listOfStudents = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-var innerContainer = document.querySelector('[data-num="0"');
-var studentSelector = innerContainer.querySelector('.student_data');
 
-function assignOptions(textArray, selector) {
-  for (var i = 0; i < textArray.length; i++) {
-    var currentOption = document.createElement('option');
-    currentOption.text = textArray[i];
-    selector.appendChild(currentOption);
-  }
-}
+$(function () {
+  // $('.student_data').select2();
 
-assignOptions(listOfStudents, studentSelector);
+  var listOfStudents = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  var innerContainer = document.querySelector('[data-num="0"');
+  var studentSelector = innerContainer.querySelector('.student_data');
 
-function updatePlot() {
-  setBubblePlot(studentSelector.value);
-}
-
-studentSelector.addEventListener('change', updatePlot, false);
-
-
-// Default Country Data
-setBubblePlot();
-
-function setBubblePlot(chosenStudent) {
-  var selectedpoints = (chosenStudent) ? [chosenStudent] : [];
-  var selected = {};
-  var unselected = {};
-  if (selectedpoints != undefined || selectedpoints.length != 0) {
-    selected = {
-      marker: {
-        size: 6,
-        color: 'rgb(255, 0, 0)'
-      }
-    }
-    unselected = {
-      marker: {
-        size: 5,
-        opacity: 0.5
-      }
+  function assignOptions(textArray, selector) {
+    for (var i = 0; i < textArray.length; i++) {
+      var currentOption = document.createElement('option');
+      currentOption.text = textArray[i];
+      selector.appendChild(currentOption);
     }
   }
 
-  var yData = [3.2146905937041748, 16.337442378832883, 3.2539601774461735, 4.755584638603736, 15.956184503328522, 1.0236859132489684, 6.423572479978357, 19.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981];
-  var yData1 = [3.2146905937041748, 15.337442378832883, 13.2539601774461735, 14.755584638603736, 5.956184503328522, 11.0236859132489684, 16.423572479978357, 10.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981];
+  assignOptions(listOfStudents, studentSelector);
 
-  var data = [{
-    name: 'Week 1',
-    type: 'box',
-    y: yData,
-    text: ["-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad"],
-    hoverinfo: "all",
-    hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
-    boxpoints: 'all',
-    jitter: 0.2,
-    whiskerwidth: 0.2,
-    fillcolor: 'cls',
-    marker: {
-      outliercolor: 'rgb(255, 0, 0)',
-      size: 4,
-      symbol: '0',
-      opacity: 1,
-      // color: 'rgba(93, 164, 214, 0.5)'
-    },
-    // boxmean: true,
-    // notched: true,
-    selectedpoints: selectedpoints,
-    selected: selected,
-    // unselected: unselected,
-    line: {
-      width: 1
-    },
-    hoverlabel: {
-      font: { size: 15 }
-    }
-  }, {
-    name: 'Chapter 1',
-    type: 'box',
-    y: yData1,
-    text: ["-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad"],
-    hoverinfo: "all",
-    hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
-    boxpoints: 'all',
-    jitter: 0.2,
-    whiskerwidth: 0.2,
-    fillcolor: 'cls',
-    marker: {
-      outliercolor: 'rgb(255, 0, 0)',
-      size: 4,
-      symbol: '0',
-      opacity: 1
-    },
-    // notched: true,
-    selectedpoints: selectedpoints,
-    selected: selected,
-    // unselected: unselected,
-    line: {
-      width: 1
-    },
-    hoverlabel: {
-      font: { size: 15 }
-    },
-    visible: false
-  }];
+  function updatePlot() {
+    setBubblePlot(studentSelector.value);
+  }
 
-  var updatemenus = [{
-    buttons: [{
-      args: [{ 'visible': [true, false] },
-      {
-        'title': 'Total time students spend on OpenDSA materials per week.'
+  studentSelector.addEventListener('change', updatePlot, false);
+
+
+  // Default Country Data
+  setBubblePlot();
+
+  function setBubblePlot(chosenStudent) {
+    var selectedpoints = (chosenStudent) ? [chosenStudent] : [];
+    var selected = {};
+    var unselected = {};
+    if (selectedpoints != undefined || selectedpoints.length != 0) {
+      selected = {
+        marker: {
+          size: 6,
+          color: 'rgb(255, 0, 0)'
+        }
       }
-      ],
-      label: 'Weeks',
-      method: 'update'
+      unselected = {
+        marker: {
+          size: 5,
+          opacity: 0.5
+        }
+      }
+    }
+
+    var yData = [3.2146905937041748, 16.337442378832883, 3.2539601774461735, 4.755584638603736, 15.956184503328522, 1.0236859132489684, 6.423572479978357, 19.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981];
+    var yData1 = [3.2146905937041748, 15.337442378832883, 13.2539601774461735, 14.755584638603736, 5.956184503328522, 11.0236859132489684, 16.423572479978357, 10.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981];
+
+    var data = [{
+      name: 'Week 1',
+      type: 'box',
+      y: yData,
+      text: ["-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad"],
+      hoverinfo: "all",
+      hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
+      boxpoints: 'all',
+      jitter: 0.2,
+      whiskerwidth: 0.2,
+      fillcolor: 'cls',
+      marker: {
+        outliercolor: 'rgb(255, 0, 0)',
+        size: 4,
+        symbol: '0',
+        opacity: 1,
+        // color: 'rgba(93, 164, 214, 0.5)'
+      },
+      // boxmean: true,
+      // notched: true,
+      selectedpoints: selectedpoints,
+      selected: selected,
+      // unselected: unselected,
+      line: {
+        width: 1
+      },
+      hoverlabel: {
+        font: { size: 15 }
+      }
     }, {
-      args: [{ 'visible': [false, true] },
-      {
-        'title': 'Total time students spend on OpenDSA materials per chapter.'
-      }
-      ],
-      label: 'Chapters',
-      method: 'update'
-    }],
-    direction: 'left',
-    pad: { 'r': 10, 't': 10 },
-    showactive: true,
-    type: 'buttons',
-    x: 1,
-    xanchor: 'left',
-    y: 1.2,
-    yanchor: 'top'
-  }]
+      name: 'Chapter 1',
+      type: 'box',
+      y: yData1,
+      text: ["-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad"],
+      hoverinfo: "all",
+      hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
+      boxpoints: 'all',
+      jitter: 0.2,
+      whiskerwidth: 0.2,
+      fillcolor: 'cls',
+      marker: {
+        outliercolor: 'rgb(255, 0, 0)',
+        size: 4,
+        symbol: '0',
+        opacity: 1
+      },
+      // notched: true,
+      selectedpoints: selectedpoints,
+      selected: selected,
+      // unselected: unselected,
+      line: {
+        width: 1
+      },
+      hoverlabel: {
+        font: { size: 15 }
+      },
+      visible: false
+    }];
 
-  var layout = {
-    'title': 'Total time students spend on OpenDSA materials per week.',
-    updatemenus: updatemenus,
-    yaxis: {
-      autorange: true,
-      showgrid: true,
-      zeroline: true,
-      dtick: 5,
-      gridcolor: 'rgb(255, 255, 255)',
-      gridwidth: 1,
-      zerolinecolor: 'rgb(255, 255, 255)',
-      zerolinewidth: 2
-    },
-    margin: {
-      l: 40,
-      r: 30,
-      b: 80,
-      t: 100
-    },
-    paper_bgcolor: 'rgb(243, 243, 243)',
-    plot_bgcolor: 'rgb(243, 243, 243)',
-    showlegend: false
+    var updatemenus = [{
+      buttons: [{
+        args: [{ 'visible': [true, false] },
+        {
+          'title': 'Total time students spend on OpenDSA materials per week.'
+        }
+        ],
+        label: 'Weeks',
+        method: 'update'
+      }, {
+        args: [{ 'visible': [false, true] },
+        {
+          'title': 'Total time students spend on OpenDSA materials per chapter.'
+        }
+        ],
+        label: 'Chapters',
+        method: 'update'
+      }],
+      direction: 'left',
+      pad: { 'r': 10, 't': 10 },
+      showactive: true,
+      type: 'buttons',
+      x: 1,
+      xanchor: 'left',
+      y: 1.2,
+      yanchor: 'top'
+    }]
+
+    var layout = {
+      'title': 'Total time students spend on OpenDSA materials per week.',
+      updatemenus: updatemenus,
+      yaxis: {
+        autorange: true,
+        showgrid: true,
+        zeroline: true,
+        dtick: 5,
+        gridcolor: 'rgb(255, 255, 255)',
+        gridwidth: 1,
+        zerolinecolor: 'rgb(255, 255, 255)',
+        zerolinewidth: 2
+      },
+      margin: {
+        l: 40,
+        r: 30,
+        b: 80,
+        t: 100
+      },
+      paper_bgcolor: 'rgb(243, 243, 243)',
+      plot_bgcolor: 'rgb(243, 243, 243)',
+      showlegend: false
+    };
+
+    Plotly.newPlot('myDiv', data, layout);
   };
 
-  Plotly.newPlot('myDiv', data, layout);
-};
+  // selectilize code
+  var $wrapper = $('#wrapper');
+
+  var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
+    '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
+
+  var formatName = function (item) {
+    return $.trim((item.first_name || '') + ' ' + (item.last_name || ''));
+  };
+
+  $('#select-to').selectize({
+    persist: false,
+    maxItems: null,
+    valueField: 'email',
+    labelField: 'name',
+    searchField: ['first_name', 'last_name', 'email'],
+    sortField: [
+      { field: 'first_name', direction: 'asc' },
+      { field: 'last_name', direction: 'asc' }
+    ],
+    options: [
+      { email: 'nikola@tesla.com', first_name: 'Nikola', last_name: 'Tesla' },
+      { email: 'brian@thirdroute.com', first_name: 'Brian', last_name: 'Reavis' },
+      { email: 'someone@gmail.com' }
+    ],
+    render: {
+      item: function (item, escape) {
+        var name = formatName(item);
+        return '<div>' +
+          (name ? '<span class="name">' + escape(name) + '</span>' : '') +
+          (item.email ? '<span class="email">' + escape(item.email) + '</span>' : '') +
+          '</div>';
+      },
+      option: function (item, escape) {
+        var name = formatName(item);
+        var label = name || item.email;
+        var caption = name ? item.email : null;
+        return '<div>' +
+          '<span class="label">' + escape(label) + '</span>' +
+          (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+          '</div>';
+      }
+    },
+    createFilter: function (input) {
+      var regexpA = new RegExp('^' + REGEX_EMAIL + '$', 'i');
+      var regexpB = new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i');
+      return regexpA.test(input) || regexpB.test(input);
+    },
+    create: function (input) {
+      if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
+        return { email: input };
+      }
+      var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
+      if (match) {
+        var name = $.trim(match[1]);
+        var pos_space = name.indexOf(' ');
+        var first_name = name.substring(0, pos_space);
+        var last_name = name.substring(pos_space + 1);
+
+        return {
+          email: match[2],
+          first_name: first_name,
+          last_name: last_name
+        };
+      }
+      alert('Invalid email address.');
+      return false;
+    }
+  });
+
+  // show current input values
+  $('select.selectized,input.selectized', $wrapper).each(function () {
+    var $container = $('<div>').addClass('value').html('Current Value: ');
+    var $value = $('<span>').appendTo($container);
+    var $input = $(this);
+    var update = function (e) { $value.text(JSON.stringify($input.val())); }
+
+    $(this).on('change', update);
+    update();
+
+    $container.insertAfter($input);
+  });
+
+});

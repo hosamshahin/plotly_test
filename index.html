@@ -3,22 +3,57 @@
 <title>Plotly Test</title>
 
 <head>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <meta charset="utf-8">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/normalize/2.0.1/normalize.min.css"
+        integrity="sha512-z7RenB+d7Y98ISMHVWIApBPpFnP8+WvF9Hvu6Ye0iC3aCX7nlvel/GNcPlhVagT4+ngN/CH7rE4aeoqjDKXYEg=="
+        crossorigin="anonymous" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+        integrity="sha512-nATinx3+kN7dKuXEB0XLIpTd7j8QahdyJjE24jTJf4HASidUCFFN/TkSVn3CifGmWwfC2mO/VmFQ6hRn2IcAwg=="
+        crossorigin="anonymous" />
+  <link rel="stylesheet"
+        href="index.css">
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+          integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+          integrity="sha512-hgoywpb1bcTi1B5kKwogCTG4cvTzDmFCJZWjit4ZimDIgXu7Dwsreq8GOQjKVUxFwxCWkLcJN5EN0W0aOngs4g=="
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
-    <div id='myDiv'> </div>
-    <!-- TODO: change html structure -->
-    <div id="bubbleplots">
-        <div class="bubbleplot" data-num="0">
-            <div class="plot" id="plotdiv"></div>
-            <div class="control-row"> Student Id:
-                <select class="student_data"></select>
-            </div>
-        </div>
+  <div id='myDiv'> </div>
+  <!-- TODO: change html structure -->
+  <div id="bubbleplots">
+    <div class="bubbleplot"
+         data-num="0">
+      <div class="plot"
+           id="plotdiv"></div>
+      <div class="control-row"> Student Id:
+        <select class="student_data"
+                name="students[]"
+                multiple="multiple"></select>
+      </div>
     </div>
+  </div>
+  <div id="wrapper">
+    <div class="demo">
+      <div class="control-group">
+        <label for="select-to">To:</label>
+        <select id="select-to"
+                class="contacts"
+                placeholder="Pick some people..."></select>
+      </div>
+      <script>
 
-    <script src="index.js"></script>
+      </script>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+
 </body>
 
 </html>
