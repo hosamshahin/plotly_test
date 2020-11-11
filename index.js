@@ -46,6 +46,10 @@ $(function () {
     studentsInfoIndex[studentsInfo[i]['email']] = i;
   }
 
+  var plotlyDiv = document.getElementById('plotlyDiv')
+
+  var plotMean = null;
+  var plotQ1 = null;
   // Default box plot
   setBoxPlot()
 
@@ -62,86 +66,124 @@ $(function () {
       }
     }
 
-    var data = [{
-      name: 'Week 1',
-      type: 'box',
-      y: yData["Weeks"],
-      text: text,
-      hoverinfo: "all",
-      hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
-      boxpoints: 'all',
-      jitter: 0.2,
-      whiskerwidth: 0.2,
-      fillcolor: 'cls',
-      marker: {
-        outliercolor: 'rgb(255, 0, 0)',
-        size: 4,
-        symbol: '0',
-        opacity: 1,
+    var data = [
+      {
+        name: 'Week 1',
+        type: 'box',
+        y: yData["Weeks"],
+        text: text,
+        hoverinfo: "all",
+        hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
+        boxpoints: 'all',
+        jitter: 0.2,
+        whiskerwidth: 0.2,
+        fillcolor: 'cls',
+        marker: {
+          outliercolor: 'rgb(255, 0, 0)',
+          size: 4,
+          symbol: '0',
+          opacity: 1,
+        },
+        selectedpoints: chosenStudents,
+        selected: selected,
+        line: {
+          width: 1
+        },
+        hoverlabel: {
+          font: { size: 15 }
+        }
       },
-      selectedpoints: chosenStudents,
-      selected: selected,
-      line: {
-        width: 1
-      },
-      hoverlabel: {
-        font: { size: 15 }
+      {
+        name: 'Chapter 1',
+        type: 'box',
+        y: yData["Chapters"],
+        text: text,
+        hoverinfo: "all",
+        hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
+        boxpoints: 'all',
+        jitter: 0.2,
+        whiskerwidth: 0.2,
+        fillcolor: 'cls',
+        marker: {
+          outliercolor: 'rgb(255, 0, 0)',
+          size: 4,
+          symbol: '0',
+          opacity: 1
+        },
+        selectedpoints: chosenStudents,
+        selected: selected,
+        line: {
+          width: 1
+        },
+        hoverlabel: {
+          font: { size: 15 }
+        },
+        visible: false
       }
-    }, {
-      name: 'Chapter 1',
-      type: 'box',
-      y: yData["Chapters"],
-      text: text,
-      hoverinfo: "all",
-      hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
-      boxpoints: 'all',
-      jitter: 0.2,
-      whiskerwidth: 0.2,
-      fillcolor: 'cls',
-      marker: {
-        outliercolor: 'rgb(255, 0, 0)',
-        size: 4,
-        symbol: '0',
-        opacity: 1
-      },
-      selectedpoints: chosenStudents,
-      selected: selected,
-      line: {
-        width: 1
-      },
-      hoverlabel: {
-        font: { size: 15 }
-      },
-      visible: false
-    }];
+    ];
 
-    var updatemenus = [{
-      buttons: [{
-        args: [{ 'visible': [true, false] },
-        {
-          'title': 'Total time students spend on OpenDSA materials per week.'
-        }
+    var updatemenus = [
+      {
+        buttons: [
+          {
+            args: [{ 'visible': [true, false] },
+            {
+              'title': 'Total time students spend on OpenDSA materials per week.'
+            }
+            ],
+            label: 'Weeks',
+            method: 'update'
+          },
+          {
+            args: [{ 'visible': [false, true] },
+            {
+              'title': 'Total time students spend on OpenDSA materials per chapter.'
+            }
+            ],
+            label: 'Chapters',
+            method: 'update'
+          }
         ],
-        label: 'Weeks',
-        method: 'update'
-      }, {
-        args: [{ 'visible': [false, true] },
-        {
-          'title': 'Total time students spend on OpenDSA materials per chapter.'
-        }
+        direction: 'left',
+        pad: { 'r': 10, 't': 10 },
+        showactive: true,
+        type: 'buttons',
+        x: 1,
+        xanchor: 'left',
+        y: 1.2,
+        yanchor: 'top'
+      },
+      {
+        buttons: [
+          {
+            name: 'reset',
+            label: 'Reset',
+            method: 'skip',
+            execute: false
+          },
+          {
+            name: '25',
+            label: '25th percentile',
+            method: 'skip',
+            execute: false
+          },
+          {
+            name: '50',
+            label: '50th percentile',
+            method: 'skip',
+            execute: false
+          }
         ],
-        label: 'Chapters',
-        method: 'update'
-      }],
-      direction: 'left',
-      pad: { 'r': 10, 't': 10 },
-      showactive: true,
-      type: 'buttons',
-      x: 1,
-      xanchor: 'left',
-      y: 1.2,
-      yanchor: 'top'
-    }]
+        direction: 'left',
+        pad: { 'r': 10, 't': 10 },
+        showactive: true,
+        type: 'buttons',
+        x: 0,
+        xanchor: 'left',
+        y: 1.2,
+        yanchor: 'top'
+      }
+    ]
 
     var layout = {
       'title': 'Total time students spend on OpenDSA materials per week.',
@@ -165,9 +207,48 @@ $(function () {
       paper_bgcolor: 'rgb(243, 243, 243)',
       plot_bgcolor: 'rgb(243, 243, 243)',
       showlegend: false
-    };
+    }
 
-    Plotly.newPlot('plotlyDiv', data, layout);
+    Plotly.newPlot(plotlyDiv, data, layout)
+      .then((plot) => {
+        console.log(plot.calcdata[0][0])
+        plotMean = plot.calcdata[0][0]['med'];
+        plotQ1 = plot.calcdata[0][0]['q1'];
+      })
+
+    plotlyDiv.on('plotly_buttonclicked', function (e) {
+      console.log(e.button.name)
+      var buttonName = e.button.name;
+      var selected = {
+        marker: {
+          size: 6,
+          color: 'rgb(255, 0, 0)'
+        }
+      }
+
+      var chosenStudents = [];
+      if (buttonName == '25') {
+        for (var i = 0; i < yData["Weeks"].length; i++) {
+          if (yData["Weeks"][i] <= plotQ1) {
+            chosenStudents.push(i);
+          }
+        }
+      } else if (buttonName == '50') {
+        for (var i = 0; i < yData["Weeks"].length; i++) {
+          if (yData["Weeks"][i] <= plotMean) {
+            chosenStudents.push(i);
+          }
+        }
+      } else {
+        chosenStudents = []
+      }
+
+      data[0]['selectedpoints'] = chosenStudents
+      data[0]['selected'] = selected
+
+      Plotly.update(plotlyDiv, data, layout);
+    })
+
   };
 
   // selectize code
@@ -232,7 +313,7 @@ $(function () {
       alert('Invalid email address.');
       return false;
     }
-  });
+  })
 
   // show current input values
   $('select.selectized,input.selectized').each(function () {
