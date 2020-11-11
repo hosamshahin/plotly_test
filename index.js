@@ -1,36 +1,55 @@
 
 $(function () {
   // $('.student_data').select2();
+  var studentsInfo = [
+    { first_name: "Istrator", last_name: "Admin", email: "admin@opendsa.org" },
+    { first_name: "Teacher", last_name: "Ima", email: "example-1@railstutorial.org" },
+    { first_name: "Stoltenberg", last_name: "Jordon", email: "example-2@railstutorial.org" },
+    { first_name: "Torphy", last_name: "Ardith", email: "example-3@railstutorial.org" },
+    { first_name: "Keeling", last_name: "Pearlie", email: "example-4@railstutorial.org" },
+    { first_name: "White", last_name: "Rahul", email: "example-5@railstutorial.org" },
+    { first_name: "Conn", last_name: "Maiya", email: "example-6@railstutorial.org" },
+    { first_name: "Thompson", last_name: "Koby", email: "example-7@railstutorial.org" },
+    { first_name: "Haag", last_name: "Robyn", email: "example-8@railstutorial.org" },
+    { first_name: "O", last_name: "Reilly", email: "example-9@railstutorial.org" },
+    { first_name: "Marquardt", last_name: "Zoe", email: "example-10@railstutorial.org" },
+    { first_name: "Kiehn", last_name: "Amira", email: "example-11@railstutorial.org" },
+    { first_name: "Doyle", last_name: "Patrick", email: "example-12@railstutorial.org" },
+    { first_name: "Runte", last_name: "Brooks", email: "example-13@railstutorial.org" },
+    { first_name: "Morissette", last_name: "Otho", email: "example-14@railstutorial.org" },
+    { first_name: "Connelly", last_name: "Leda", email: "example-15@railstutorial.org" },
+    { first_name: "Frami", last_name: "Dayne", email: "example-16@railstutorial.org" },
+    { first_name: "Morar", last_name: "Aurelia", email: "example-17@railstutorial.org" },
+    { first_name: "Mohr", last_name: "Buster", email: "example-18@railstutorial.org" },
+    { first_name: "Sporer", last_name: "Casper", email: "example-19@railstutorial.org" },
+    { first_name: "Nader", last_name: "Jammie", email: "example-20@railstutorial.org" },
+    { first_name: "Wolff", last_name: "Noah", email: "example-21@railstutorial.org" },
+    { first_name: "Upton", last_name: "Fatima", email: "example-22@railstutorial.org" },
+    { first_name: "Bernier", last_name: "Oma", email: "example-23@railstutorial.org" },
+    { first_name: "VonRueden", last_name: "Alexandro", email: "example-24@railstutorial.org" },
+    { first_name: "Pfannerstill", last_name: "Breanne", email: "example-25@railstutorial.org" },
+    { first_name: "Hilpert", last_name: "Darren", email: "example-26@railstutorial.org" },
+    { first_name: "Becker", last_name: "Virgie", email: "example-27@railstutorial.org" },
+    { first_name: "Gorczany", last_name: "Eleonore", email: "example-28@railstutorial.org" },
+    { first_name: "Wolf", last_name: "Malinda", email: "example-29@railstutorial.org" },
+    { first_name: "O", last_name: "Hara", email: "example-30@railstutorial.org" }
+  ]
+  var text = studentsInfo.map(x => x.first_name + " " + x.last_name + "<" + x.email + ">")
+  var studentsInfoIndex = {};
 
-  var listOfStudents = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  var innerContainer = document.querySelector('[data-num="0"');
-  var studentSelector = innerContainer.querySelector('.student_data');
-
-  function assignOptions(textArray, selector) {
-    for (var i = 0; i < textArray.length; i++) {
-      var currentOption = document.createElement('option');
-      currentOption.text = textArray[i];
-      selector.appendChild(currentOption);
-    }
+  for (var i = 0; i < studentsInfo.length; i++) {
+    studentsInfoIndex[studentsInfo[i]['email']] = i;
   }
 
-  assignOptions(listOfStudents, studentSelector);
 
-  function updatePlot() {
-    setBubblePlot(studentSelector.value);
-  }
+  // Default box plot
+  setBoxPlot();
 
-  studentSelector.addEventListener('change', updatePlot, false);
-
-
-  // Default Country Data
-  setBubblePlot();
-
-  function setBubblePlot(chosenStudent) {
-    var selectedpoints = (chosenStudent) ? [chosenStudent] : [];
+  function setBoxPlot(chosenStudents) {
+    var chosenStudents = chosenStudents || [];
     var selected = {};
     var unselected = {};
-    if (selectedpoints != undefined || selectedpoints.length != 0) {
+    if (chosenStudents != undefined || chosenStudents.length != 0) {
       selected = {
         marker: {
           size: 6,
@@ -52,7 +71,7 @@ $(function () {
       name: 'Week 1',
       type: 'box',
       y: yData,
-      text: ["-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad"],
+      text: text,
       hoverinfo: "all",
       hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
       boxpoints: 'all',
@@ -68,7 +87,7 @@ $(function () {
       },
       // boxmean: true,
       // notched: true,
-      selectedpoints: selectedpoints,
+      selectedpoints: chosenStudents,
       selected: selected,
       // unselected: unselected,
       line: {
@@ -81,7 +100,7 @@ $(function () {
       name: 'Chapter 1',
       type: 'box',
       y: yData1,
-      text: ["-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad", "-hshahin", "-hosam", "-latif", "-shahin", "Zeyad", "hshahin", "hosam", "latif", "shahin", "Zeyad"],
+      text: text,
       hoverinfo: "all",
       hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
       boxpoints: 'all',
@@ -95,7 +114,7 @@ $(function () {
         opacity: 1
       },
       // notched: true,
-      selectedpoints: selectedpoints,
+      selectedpoints: chosenStudents,
       selected: selected,
       // unselected: unselected,
       line: {
@@ -162,7 +181,7 @@ $(function () {
     Plotly.newPlot('myDiv', data, layout);
   };
 
-  // selectilize code
+  // selectize code
   var $wrapper = $('#wrapper');
 
   var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
@@ -182,11 +201,7 @@ $(function () {
       { field: 'first_name', direction: 'asc' },
       { field: 'last_name', direction: 'asc' }
     ],
-    options: [
-      { email: 'nikola@tesla.com', first_name: 'Nikola', last_name: 'Tesla' },
-      { email: 'brian@thirdroute.com', first_name: 'Brian', last_name: 'Reavis' },
-      { email: 'someone@gmail.com' }
-    ],
+    options: studentsInfo,
     render: {
       item: function (item, escape) {
         var name = formatName(item);
@@ -237,7 +252,18 @@ $(function () {
     var $container = $('<div>').addClass('value').html('Current Value: ');
     var $value = $('<span>').appendTo($container);
     var $input = $(this);
-    var update = function (e) { $value.text(JSON.stringify($input.val())); }
+    var update = function (e) {
+      var selectedStudents = $input.val();
+      $value.text(JSON.stringify(selectedStudents));
+      if (selectedStudents) {
+        var chosenStudents = [];
+        for (var i = 0; i < selectedStudents.length; i++) {
+          chosenStudents.push(studentsInfoIndex[selectedStudents[i]]);
+        }
+        console.log(chosenStudents);
+        setBoxPlot(chosenStudents)
+      }
+    }
 
     $(this).on('change', update);
     update();
