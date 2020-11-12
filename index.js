@@ -246,7 +246,6 @@ $(function () {
     if (['weeks', 'chapters'].includes(buttonName)) {
       currentTab = buttonName;
       selectize.clear()
-      // console.log(plotlyDiv.calcdata);
     } else {
       if (currentTab == 'weeks') {
         plotMean = plotlyDiv.calcdata[0][0]['med'];
@@ -288,10 +287,11 @@ $(function () {
       }
     }
 
-    data[0]['selectedpoints'] = chosenStudents
-    // data[0]['selected'] = selected
-    data[1]['selectedpoints'] = chosenStudents
-    // data[1]['selected'] = selected
+    if (currentTab == 'weeks') {
+      data[0]['selectedpoints'] = chosenStudents
+    } else if (currentTab == 'chapters') {
+      data[1]['selectedpoints'] = chosenStudents
+    }
 
     Plotly.update(plotlyDiv, data, layout);
   })
