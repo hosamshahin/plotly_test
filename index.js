@@ -3,6 +3,8 @@ $(function () {
     function (err, userData) {
 
       var studentsInfo = userData['studentsInfo']
+      var numOfWeeks = userData['weeks'].length
+      var numOfChapters = userData['chapters'].length
       var text = studentsInfo.map(x => x.first_name + " " + x.last_name + "<" + x.email + ">")
       var studentsInfoIndex = {};
 
@@ -10,14 +12,19 @@ $(function () {
         studentsInfoIndex[studentsInfo[i]['email']] = i;
       }
 
-      plotlyDiv = document.getElementById('plotlyDiv')
+      plotlyDiv = $("#plotlyDiv")[0]
 
-      var plotMean = null;
-      var plotQ1 = null;
       var dataTables = null;
       var currentTab = 'weeks';
 
-      function createDataTables(chosenStudentsInfo) {
+      function createDataTables(chosenStudentsInfo, caption) {
+        var caption = caption || ""
+        if ($(".students_caption").length) {
+          $(".students_caption").text(caption);
+        } else {
+          $('#students_info').append('<caption style="caption-side: top" class="students_caption">' + caption + '</caption>');
+        }
+
         return $('#students_info').DataTable({
           destroy: true,
           data: chosenStudentsInfo,
@@ -30,8 +37,18 @@ $(function () {
         });
       }
 
+      function clearDataTables(dataTables) {
+        if ($(".students_caption").length) {
+          $(".students_caption").text("");
+        }
+
+        dataTables.rows()
+          .remove()
+          .draw();
+      }
+
       // plotly data
-      var data = []
+      var plotlyData = []
       var weeksVisible = []
       var chaptersVisible = []
       // Add weeks
@@ -67,7 +84,7 @@ $(function () {
             font: { size: 15 }
           }
         };
-        data.push(result);
+        plotlyData.push(result);
         weeksVisible.push(true)
         chaptersVisible.push(false)
       };
@@ -106,7 +123,7 @@ $(function () {
           },
           visible: false
         };
-        data.push(result);
+        plotlyData.push(result);
         weeksVisible.push(false)
         chaptersVisible.push(true)
       };
@@ -182,6 +199,7 @@ $(function () {
         'title': 'Total time students spend on OpenDSA materials per week.',
         updatemenus: updatemenus,
         yaxis: {
+          title: 'Reading time in mins.',
           autorange: true,
           showgrid: true,
           zeroline: true,
@@ -208,80 +226,83 @@ $(function () {
       }
 
       // plotly initialize
-      Plotly.newPlot(plotlyDiv, data, layout)
+      Plotly.newPlot(plotlyDiv, plotlyData, layout)
+
+      // get the index(es) of the active trace(s)
+      function getActiveTrace() {
+        var calcdata = plotlyDiv.calcdata
+        var activeTraces = []
+        for (var i = 0; i < calcdata.length; i++) {
+          if (calcdata[i][0]['x'] != undefined)
+            activeTraces.push(i)
+        }
+        return activeTraces
+      }
 
       // event handler to select points and show dataTables
       plotlyDiv.on('plotly_buttonclicked', function (e) {
         var buttonName = e.button.name;
+        var plotMean = null;
+        var plotQ1 = null;
+        var traceIndex = null
+        var chosenStudents = [];
+        var chosenStudentsInfo = [];
+        var studentInfo = {};
         selectize.clear()
 
         if (['weeks', 'chapters'].includes(buttonName)) {
           currentTab = buttonName;
-        } else {
-          console.log(plotlyDiv.calcdata)
-          if (currentTab == 'weeks') {
-            plotMean = plotlyDiv.calcdata[0][0]['med'];
-            plotQ1 = plotlyDiv.calcdata[0][0]['q1'];
-          } else if (currentTab == 'chapters') {
-            plotMean = plotlyDiv.calcdata[1][0]['med'];
-            plotQ1 = plotlyDiv.calcdata[1][0]['q1'];
-          }
-        }
-
-        var chosenStudents = [];
-        var chosenStudentsInfo = [];
-        var studentInfo = {};
-        var refData = userData[currentTab][0]
-        if (buttonName == '25') {
-          for (var i = 0; i < refData.length; i++) {
-            if (refData[i] <= plotQ1) {
-              chosenStudents.push(i);
-              studentInfo = studentsInfo[i]
-              chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], refData[i]])
-            }
-          }
-          dataTables = createDataTables(chosenStudentsInfo)
-        } else if (buttonName == '50') {
-          for (var i = 0; i < refData.length; i++) {
-            if (refData[i] <= plotMean) {
-              chosenStudents.push(i);
-              studentInfo = studentsInfo[i]
-              chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], refData[i]])
-            }
-          }
-          dataTables = createDataTables(chosenStudentsInfo)
-        } else {
-          chosenStudents = []
           if (dataTables) {
-            dataTables.rows()
-              .remove()
-              .draw();
+            clearDataTables(dataTables)
           }
+        } else {
+          traceIndex = getActiveTrace()[0]
+
+          plotMean = plotlyDiv.calcdata[traceIndex][0]['med'];
+          plotQ1 = plotlyDiv.calcdata[traceIndex][0]['q1'];
+
+          var tabIndex = (traceIndex + 1 > numOfWeeks) ? traceIndex - numOfWeeks : traceIndex;
+          var refData = userData[currentTab][tabIndex]
+          var refName = userData[currentTab + "_names"][tabIndex]
+          if (buttonName == '25') {
+            for (var i = 0; i < refData.length; i++) {
+              if (refData[i] <= plotQ1) {
+                chosenStudents.push(i);
+                studentInfo = studentsInfo[i]
+                chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], refData[i]])
+              }
+            }
+            dataTables = createDataTables(chosenStudentsInfo, "Students reading time less than 25th percentile for " + refName)
+          } else if (buttonName == '50') {
+            for (var i = 0; i < refData.length; i++) {
+              if (refData[i] <= plotMean) {
+                chosenStudents.push(i);
+                studentInfo = studentsInfo[i]
+                chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], refData[i]])
+              }
+            }
+            dataTables = createDataTables(chosenStudentsInfo, "Students reading time less than 50th percentile for " + refName)
+          } else {
+            chosenStudents = []
+            if (dataTables) {
+              clearDataTables(dataTables)
+            }
+          }
+
+          plotlyData[traceIndex]['selectedpoints'] = chosenStudents
+          Plotly.update(plotlyDiv, plotlyData, layout);
         }
 
-        if (currentTab == 'weeks') {
-          data[0]['selectedpoints'] = chosenStudents
-        } else if (currentTab == 'chapters') {
-          data[1]['selectedpoints'] = chosenStudents
-        }
-
-        Plotly.update(plotlyDiv, data, layout);
       })
-
-      plotlyDiv.on('plotly_restyle', function (e) {
-        console.log(JSON.stringify(e))
-      })
-      // plotlyDiv.on('plotly_legendclick', function (e) {
-      //   console.log(e)
-      // })
 
       function updateBoxPlot(chosenStudents) {
         var chosenStudents = chosenStudents || []
+        var traceIndex = getActiveTrace()
 
-        data[0]['selectedpoints'] = chosenStudents
-        data[1]['selectedpoints'] = chosenStudents
-
-        Plotly.update(plotlyDiv, data, layout)
+        for (var i = 0; i < traceIndex.length; i++) {
+          plotlyData[traceIndex[i]]['selectedpoints'] = chosenStudents
+        }
+        Plotly.update(plotlyDiv, plotlyData, layout)
       };
 
       //
@@ -366,9 +387,7 @@ $(function () {
             }
             updateBoxPlot(chosenStudents)
             if (dataTables) {
-              dataTables.rows()
-                .remove()
-                .draw();
+              clearDataTables(dataTables)
             }
           }
         }
@@ -376,5 +395,4 @@ $(function () {
         $(this).on('change', update);
       });
     });
-
 });
