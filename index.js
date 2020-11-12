@@ -73,7 +73,7 @@ $(function () {
           selectedpoints: [],
           selected: {
             marker: {
-              size: 6,
+              size: 7,
               color: 'rgb(255, 0, 0)'
             }
           },
