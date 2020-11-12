@@ -38,8 +38,8 @@ $(function () {
   ]
 
   var yData = {
-    Weeks: [3.2146905937041748, 16.337442378832883, 3.2539601774461735, 4.755584638603736, 15.956184503328522, 1.0236859132489684, 6.423572479978357, 19.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981],
-    Chapters: [3.2146905937041748, 15.337442378832883, 13.2539601774461735, 14.755584638603736, 5.956184503328522, 11.0236859132489684, 16.423572479978357, 10.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981]
+    weeks: [3.2146905937041748, 16.337442378832883, 3.2539601774461735, 4.755584638603736, 15.956184503328522, 1.0236859132489684, 6.423572479978357, 19.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981],
+    chapters: [3.2146905937041748, 15.337442378832883, 13.2539601774461735, 14.755584638603736, 5.956184503328522, 11.0236859132489684, 16.423572479978357, 10.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981]
   }
 
   var text = studentsInfo.map(x => x.first_name + " " + x.last_name + "<" + x.email + ">")
@@ -54,6 +54,7 @@ $(function () {
   var plotMean = null;
   var plotQ1 = null;
   var dataTables = null;
+  var currentTab = 'weeks';
 
   function createDataTables(chosenStudentsInfo) {
     return $('#students_info').DataTable({
@@ -73,7 +74,7 @@ $(function () {
     {
       name: 'Week 1',
       type: 'box',
-      y: yData["Weeks"],
+      y: yData["weeks"],
       text: text,
       hoverinfo: "all",
       hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
@@ -104,7 +105,7 @@ $(function () {
     {
       name: 'Chapter 1',
       type: 'box',
-      y: yData["Chapters"],
+      y: yData["chapters"],
       text: text,
       hoverinfo: "all",
       hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
@@ -236,11 +237,6 @@ $(function () {
 
   // plotly initialize
   Plotly.newPlot(plotlyDiv, data, layout)
-    .then((plot) => {
-      // console.log(plot.calcdata[0][0])
-      plotMean = plot.calcdata[0][0]['med'];
-      plotQ1 = plot.calcdata[0][0]['q1'];
-    })
 
   // event handler to select points and show datatabels
   plotlyDiv.on('plotly_buttonclicked', function (e) {
@@ -248,26 +244,37 @@ $(function () {
     var buttonName = e.button.name;
 
     if (['weeks', 'chapters'].includes(buttonName)) {
+      currentTab = buttonName;
       selectize.clear()
+      // console.log(plotlyDiv.calcdata);
+    } else {
+      if (currentTab == 'weeks') {
+        plotMean = plotlyDiv.calcdata[0][0]['med'];
+        plotQ1 = plotlyDiv.calcdata[0][0]['q1'];
+      } else if (currentTab == 'chapters') {
+        plotMean = plotlyDiv.calcdata[1][0]['med'];
+        plotQ1 = plotlyDiv.calcdata[1][0]['q1'];
+      }
     }
+
     var chosenStudents = [];
     var chosenStudentsInfo = [];
     var studentInfo = {};
     if (buttonName == '25') {
-      for (var i = 0; i < yData["Weeks"].length; i++) {
-        if (yData["Weeks"][i] <= plotQ1) {
+      for (var i = 0; i < yData[currentTab].length; i++) {
+        if (yData[currentTab][i] <= plotQ1) {
           chosenStudents.push(i);
           studentInfo = studentsInfo[i]
-          chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], yData["Weeks"][i]])
+          chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], yData[currentTab][i]])
         }
       }
       dataTables = createDataTables(chosenStudentsInfo)
     } else if (buttonName == '50') {
-      for (var i = 0; i < yData["Weeks"].length; i++) {
-        if (yData["Weeks"][i] <= plotMean) {
+      for (var i = 0; i < yData[currentTab].length; i++) {
+        if (yData[currentTab][i] <= plotMean) {
           chosenStudents.push(i);
           studentInfo = studentsInfo[i]
-          chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], yData["Weeks"][i]])
+          chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], yData[currentTab][i]])
         }
       }
       dataTables = createDataTables(chosenStudentsInfo)
