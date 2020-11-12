@@ -1,47 +1,49 @@
 
 $(function () {
   //
-  // plotly data
+  // plotly user data
   //
-  var studentsInfo = [
-    { last_name: "Istrator", first_name: "Admin", email: "admin@opendsa.org" },
-    { last_name: "Teacher", first_name: "Ima", email: "example-1@railstutorial.org" },
-    { last_name: "Stoltenberg", first_name: "Jordon", email: "example-2@railstutorial.org" },
-    { last_name: "Torphy", first_name: "Ardith", email: "example-3@railstutorial.org" },
-    { last_name: "Keeling", first_name: "Pearlie", email: "example-4@railstutorial.org" },
-    { last_name: "White", first_name: "Rahul", email: "example-5@railstutorial.org" },
-    { last_name: "Conn", first_name: "Maiya", email: "example-6@railstutorial.org" },
-    { last_name: "Thompson", first_name: "Koby", email: "example-7@railstutorial.org" },
-    { last_name: "Haag", first_name: "Robyn", email: "example-8@railstutorial.org" },
-    { last_name: "O", first_name: "Reilly", email: "example-9@railstutorial.org" },
-    { last_name: "Marquardt", first_name: "Zoe", email: "example-10@railstutorial.org" },
-    { last_name: "Kiehn", first_name: "Amira", email: "example-11@railstutorial.org" },
-    { last_name: "Doyle", first_name: "Patrick", email: "example-12@railstutorial.org" },
-    { last_name: "Runte", first_name: "Brooks", email: "example-13@railstutorial.org" },
-    { last_name: "Morissette", first_name: "Otho", email: "example-14@railstutorial.org" },
-    { last_name: "Connelly", first_name: "Leda", email: "example-15@railstutorial.org" },
-    { last_name: "Frami", first_name: "Dayne", email: "example-16@railstutorial.org" },
-    { last_name: "Morar", first_name: "Aurelia", email: "example-17@railstutorial.org" },
-    { last_name: "Mohr", first_name: "Buster", email: "example-18@railstutorial.org" },
-    { last_name: "Sporer", first_name: "Casper", email: "example-19@railstutorial.org" },
-    { last_name: "Nader", first_name: "Jammie", email: "example-20@railstutorial.org" },
-    { last_name: "Wolff", first_name: "Noah", email: "example-21@railstutorial.org" },
-    { last_name: "Upton", first_name: "Fatima", email: "example-22@railstutorial.org" },
-    { last_name: "Bernier", first_name: "Oma", email: "example-23@railstutorial.org" },
-    { last_name: "VonRueden", first_name: "Alexandro", email: "example-24@railstutorial.org" },
-    { last_name: "Pfannerstill", first_name: "Breanne", email: "example-25@railstutorial.org" },
-    { last_name: "Hilpert", first_name: "Darren", email: "example-26@railstutorial.org" },
-    { last_name: "Becker", first_name: "Virgie", email: "example-27@railstutorial.org" },
-    { last_name: "Gorczany", first_name: "Eleonore", email: "example-28@railstutorial.org" },
-    { last_name: "Wolf", first_name: "Malinda", email: "example-29@railstutorial.org" },
-    { last_name: "O", first_name: "Hara", email: "example-30@railstutorial.org" }
-  ]
-
-  var yData = {
-    weeks: [3.2146905937041748, 16.337442378832883, 3.2539601774461735, 4.755584638603736, 15.956184503328522, 1.0236859132489684, 6.423572479978357, 19.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981],
-    chapters: [3.2146905937041748, 15.337442378832883, 13.2539601774461735, 14.755584638603736, 5.956184503328522, 11.0236859132489684, 16.423572479978357, 10.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981]
+  var userData = {
+    weeks: [[3.2146905937041748, 16.337442378832883, 3.2539601774461735, 4.755584638603736, 15.956184503328522, 1.0236859132489684, 6.423572479978357, 19.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981]],
+    chapters: [[3.2146905937041748, 15.337442378832883, 13.2539601774461735, 14.755584638603736, 5.956184503328522, 11.0236859132489684, 16.423572479978357, 10.933330118912536, 6.2264725816196265, 10.274937628559645, 8.047246143373282, 9.175666737991758, 18.645787209731942, 18.567844540339404, 17.528679104158215, 0.5182648760324993, 3.8180323515972248, 15.527970648790216, 19.753525357400772, 2.781231640974644, 12.854973038577594, 12.827236979598968, 5.496562187336775, 9.653908256257871, 13.86613500036622, 18.408012701634846, 18.7709252038373, 12.40018253575155, 17.028683936654602, 14.459569438850227, 7.365172492737981]],
+    weeks_names: ['Week 1'],
+    chapters_names: ['Chapter 1'],
+    studentsInfo: [
+      { last_name: "Istrator", first_name: "Admin", email: "admin@opendsa.org" },
+      { last_name: "Teacher", first_name: "Ima", email: "example-1@railstutorial.org" },
+      { last_name: "Stoltenberg", first_name: "Jordon", email: "example-2@railstutorial.org" },
+      { last_name: "Torphy", first_name: "Ardith", email: "example-3@railstutorial.org" },
+      { last_name: "Keeling", first_name: "Pearlie", email: "example-4@railstutorial.org" },
+      { last_name: "White", first_name: "Rahul", email: "example-5@railstutorial.org" },
+      { last_name: "Conn", first_name: "Maiya", email: "example-6@railstutorial.org" },
+      { last_name: "Thompson", first_name: "Koby", email: "example-7@railstutorial.org" },
+      { last_name: "Haag", first_name: "Robyn", email: "example-8@railstutorial.org" },
+      { last_name: "O", first_name: "Reilly", email: "example-9@railstutorial.org" },
+      { last_name: "Marquardt", first_name: "Zoe", email: "example-10@railstutorial.org" },
+      { last_name: "Kiehn", first_name: "Amira", email: "example-11@railstutorial.org" },
+      { last_name: "Doyle", first_name: "Patrick", email: "example-12@railstutorial.org" },
+      { last_name: "Runte", first_name: "Brooks", email: "example-13@railstutorial.org" },
+      { last_name: "Morissette", first_name: "Otho", email: "example-14@railstutorial.org" },
+      { last_name: "Connelly", first_name: "Leda", email: "example-15@railstutorial.org" },
+      { last_name: "Frami", first_name: "Dayne", email: "example-16@railstutorial.org" },
+      { last_name: "Morar", first_name: "Aurelia", email: "example-17@railstutorial.org" },
+      { last_name: "Mohr", first_name: "Buster", email: "example-18@railstutorial.org" },
+      { last_name: "Sporer", first_name: "Casper", email: "example-19@railstutorial.org" },
+      { last_name: "Nader", first_name: "Jammie", email: "example-20@railstutorial.org" },
+      { last_name: "Wolff", first_name: "Noah", email: "example-21@railstutorial.org" },
+      { last_name: "Upton", first_name: "Fatima", email: "example-22@railstutorial.org" },
+      { last_name: "Bernier", first_name: "Oma", email: "example-23@railstutorial.org" },
+      { last_name: "VonRueden", first_name: "Alexandro", email: "example-24@railstutorial.org" },
+      { last_name: "Pfannerstill", first_name: "Breanne", email: "example-25@railstutorial.org" },
+      { last_name: "Hilpert", first_name: "Darren", email: "example-26@railstutorial.org" },
+      { last_name: "Becker", first_name: "Virgie", email: "example-27@railstutorial.org" },
+      { last_name: "Gorczany", first_name: "Eleonore", email: "example-28@railstutorial.org" },
+      { last_name: "Wolf", first_name: "Malinda", email: "example-29@railstutorial.org" },
+      { last_name: "O", first_name: "Hara", email: "example-30@railstutorial.org" }
+    ]
   }
 
+  var studentsInfo = userData['studentsInfo']
   var text = studentsInfo.map(x => x.first_name + " " + x.last_name + "<" + x.email + ">")
   var studentsInfoIndex = {};
 
@@ -74,7 +76,7 @@ $(function () {
     {
       name: 'Week 1',
       type: 'box',
-      y: yData["weeks"],
+      y: userData["weeks"][0],
       text: text,
       hoverinfo: "all",
       hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
@@ -105,7 +107,7 @@ $(function () {
     {
       name: 'Chapter 1',
       type: 'box',
-      y: yData["chapters"],
+      y: userData["chapters"][0],
       text: text,
       hoverinfo: "all",
       hovertemplate: "%{text}<br>%{y:.2f} mins<extra></extra>",
@@ -259,21 +261,22 @@ $(function () {
     var chosenStudents = [];
     var chosenStudentsInfo = [];
     var studentInfo = {};
+    var refData = userData[currentTab][0]
     if (buttonName == '25') {
-      for (var i = 0; i < yData[currentTab].length; i++) {
-        if (yData[currentTab][i] <= plotQ1) {
+      for (var i = 0; i < refData.length; i++) {
+        if (refData[i] <= plotQ1) {
           chosenStudents.push(i);
           studentInfo = studentsInfo[i]
-          chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], yData[currentTab][i]])
+          chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], refData[i]])
         }
       }
       dataTables = createDataTables(chosenStudentsInfo)
     } else if (buttonName == '50') {
-      for (var i = 0; i < yData[currentTab].length; i++) {
-        if (yData[currentTab][i] <= plotMean) {
+      for (var i = 0; i < refData.length; i++) {
+        if (refData[i] <= plotMean) {
           chosenStudents.push(i);
           studentInfo = studentsInfo[i]
-          chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], yData[currentTab][i]])
+          chosenStudentsInfo.push([studentInfo['first_name'], studentInfo['last_name'], studentInfo['email'], refData[i]])
         }
       }
       dataTables = createDataTables(chosenStudentsInfo)
